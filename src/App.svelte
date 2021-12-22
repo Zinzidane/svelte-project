@@ -3,6 +3,7 @@
 	import type { Meetup } from './types/meetup.type';
 	import MeetupGrid from './Meetups/MeetupGrid.svelte';
 	import TextInput from './UI/TextInput.svelte';
+	import Button from './UI/Button.svelte';
 
 	export let title = '';
 	export let subtitle = '';
@@ -62,7 +63,7 @@
 		<TextInput controlType="input" id="imageurl" label="Image URL" value={imageUrl} on:input={event => (imageUrl = event.target.value)} />
 		<TextInput controlType="input" inputType="mail" id="email" label="Contact email" value={contactEmail} on:input={event => (contactEmail = event.target.value)} />
 		<TextInput controlType="textarea" id="description" label="Description" value={description} on:input={event => (description = event.target.value)} />
-		<button type="submit">Save</button>
+		<Button type="submit" caption="Save"></Button>
 	</form>
 	<MeetupGrid {meetups} />
 </main>

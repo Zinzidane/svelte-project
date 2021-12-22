@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Meetup } from "../types/meetup.type";
+    import Button from "../UI/Button.svelte";
 
     export let meetup: Meetup;
 </script>
@@ -70,8 +71,8 @@
     </div>
     <div class="content">{meetup.description}</div>
     <footer>
-        <a href="mailto:{meetup.contactEmail}">Contact</a>
-        <button>Show details</button>
-        <button>Favorite</button>
+        <Button href="mailto:{meetup.contactEmail}" caption="Contact" />
+        <Button caption="Favorite" mode="outline" />
+        <Button caption="Show details" />
     </footer>
 </article>
