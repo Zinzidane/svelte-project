@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Meetup } from "../types/meetup.type.ts";
+    import type { Meetup } from "../types/meetup.type";
 
     export let meetup: Meetup;
 </script>

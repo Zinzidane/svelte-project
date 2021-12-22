@@ -1,9 +1,17 @@
 <script lang="ts">
 	import Header from './UI/Header.svelte';
-	import MeetupItem from './Meetups/MeetupItem.svelte';
 	import type { Meetup } from './types/meetup.type';
+	import MeetupGrid from './Meetups/MeetupGrid.svelte';
+	import TextInput from './UI/TextInput.svelte';
 
-	const meetups: Meetup[] = [
+	export let title = '';
+	export let subtitle = '';
+	export let address = '';
+	export let description = '';
+	export let imageUrl = '';
+	export let contactEmail = '';
+
+	let meetups: Meetup[] = [
 		{
 		id: "m1",
 		title: "Coding Bootcamp",
@@ -26,18 +34,29 @@
 		contactEmail: "swim@test.com"
 		}
 	];
+
+	function addMeetup() {
+		meetups = [...meetups, {id: Math.random().toString(), title, subtitle, description, imageUrl, address, contactEmail}]
+	}
 </script>
 
 <style>
-	#meetups {
+	main {
 		margin-top: 5rem;
 	}
 </style>
 
 <Header />
 
-<section id="meetups">
-	{#each meetups as meetup}
-		<MeetupItem {meetup} />
-	{/each}
-</section>
+<main>
+	<form on:submit|preventDefault="{addMeetup}">
+		<TextInput controlType="input" id="title" label="Title" value={title} on:input={event => (title = event.target.value)} />
+		<TextInput controlType="input" id="subtitle" label="Subtitle" value={subtitle} on:input={event => (subtitle = event.target.value)} />
+		<TextInput controlType="input" id="address" label="Address" value={address} on:input={event => (address = event.target.value)} />
+		<TextInput controlType="input" id="imageurl" label="Image URL" value={imageUrl} on:input={event => (imageUrl = event.target.value)} />
+		<TextInput controlType="input" inputType="mail" id="email" label="Contact email" value={contactEmail} on:input={event => (contactEmail = event.target.value)} />
+		<TextInput controlType="textarea" id="description" label="Description" value={description} on:input={event => (description = event.target.value)} />
+		<button type="submit">Save</button>
+	</form>
+	<MeetupGrid {meetups} />
+</main>
