@@ -84,8 +84,13 @@
     </div>
     <div class="content">{meetup.description}</div>
     <footer>
-        <Button href="mailto:{meetup.contactEmail}" caption="Contact" />
-        <Button caption="{meetup.isFavorite ? 'Unfavorite' : 'Favorite'}" color="{meetup.isFavorite ? null : 'success'}" mode="outline" on:click={() => dispatch('togglefavorite', meetup.id)}/>
-        <Button caption="Show details" />
+        <Button href="mailto:{meetup.contactEmail}">Contact</Button>
+        <Button
+          color="{meetup.isFavorite ? null : 'success'}"
+          mode="outline"
+          on:click={() => dispatch('togglefavorite', meetup.id)}>
+          {meetup.isFavorite ? 'Unfavorite' : 'Favorite'}
+        </Button>
+        <Button>Show details</Button>
     </footer>
 </article>

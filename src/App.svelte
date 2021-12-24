@@ -40,6 +40,7 @@ import Button from './UI/Button.svelte';
 		} else {
 			meetups = [...meetups, meetup];
 		}
+		mode = null;
 	}
 
 	function toggleFavorite(event): void {
@@ -62,7 +63,7 @@ import Button from './UI/Button.svelte';
 
 <main>
 	<div class="meetups-controls">
-		<Button caption="New Meetup" on:click={() => mode = 'new'}></Button>
+		<Button on:click={() => mode = 'new'}>New Meetup</Button>
 	</div>
 	{#if mode === 'new'}
 		<EditMeetup on:save={saveMeetup} />
