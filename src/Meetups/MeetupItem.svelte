@@ -1,6 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
     import type { Meetup } from "../types/meetup.type";
+    import Badge from "../UI/Badge.svelte";
     import Button from "../UI/Button.svelte";
 
     export let meetup: Meetup;
@@ -69,7 +70,12 @@
 
 <article>
     <header>
-        <h1>{meetup.title}</h1>
+        <h1>
+          {meetup.title}
+          {#if meetup.isFavorite}
+            <Badge>FAVORITE</Badge>
+          {/if}
+        </h1>
         <h2>{meetup.subtitle}</h2>
         <p>{meetup.address}</p>
     </header>
