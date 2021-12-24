@@ -70,7 +70,7 @@
 
 <article>
     <header>
-        <h1>
+        <h1 class:is-favorite={meetup.isFavorite}>
           {meetup.title}
           {#if meetup.isFavorite}
             <Badge>FAVORITE</Badge>
