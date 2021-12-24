@@ -30,9 +30,14 @@
 		}
 	];
 
-	function addMeetup(event): void {
-		const newMeetup = event.detail;
-		meetups = [...meetups, newMeetup];
+	function saveMeetup(event): void {
+		const meetup = event.detail;
+		const meetupIndex = meetups.findIndex(m => m.id === meetup.id);
+		if (meetupIndex > -1) {
+			meetups = meetups.splice(meetupIndex, 1, meetup);
+		} else {
+			meetups = [...meetups, meetup];
+		}
 	}
 
 	function toggleFavorite(event): void {
@@ -50,6 +55,6 @@
 <Header />
 
 <main>
-	<EditMeetup on:addmeetup={addMeetup} />
+	<EditMeetup on:save={saveMeetup} />
 	<MeetupGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>

@@ -13,8 +13,8 @@ export let contactEmail = '';
 
 const dispatch = createEventDispatcher();
 
-function addMeetup(): void {
-    dispatch('addmeetup', {
+function submitForm(): void {
+    dispatch('save', {
         id: Math.random().toString(),
         title,
         subtitle,
@@ -36,7 +36,7 @@ function addMeetup(): void {
 	}
 </style>
 
-<form on:submit|preventDefault="{addMeetup}">
+<form on:submit|preventDefault="{submitForm}">
     <TextInput controlType="input" id="title" label="Title" value={title} on:input={event => (title = event.target.value)} />
     <TextInput controlType="input" id="subtitle" label="Subtitle" value={subtitle} on:input={event => (subtitle = event.target.value)} />
     <TextInput controlType="input" id="address" label="Address" value={address} on:input={event => (address = event.target.value)} />
