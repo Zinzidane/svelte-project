@@ -1,8 +1,8 @@
 <script lang="ts">
     export let type: 'button' | 'submit' = 'button';
-    export let caption: string;
-    export let href: string;
-    export let mode: string;
+    export let caption: string = '';
+    export let href: string = null;
+    export let mode: string = null;
 </script>
 
 <style>
