@@ -3,6 +3,7 @@
 	import type { Meetup } from './types/meetup.type';
 	import MeetupGrid from './Meetups/MeetupGrid.svelte';
     import EditMeetup from './Meetups/EditMeetup.svelte';
+import Button from './UI/Button.svelte';
 
 	let meetups: Meetup[] = [
 		{
@@ -29,6 +30,7 @@
 		isFavorite: false
 		}
 	];
+	let mode: 'edit' | 'new' = null;
 
 	function saveMeetup(event): void {
 		const meetup = event.detail;
@@ -55,6 +57,9 @@
 <Header />
 
 <main>
-	<EditMeetup on:save={saveMeetup} />
+	<Button caption="New Meetup" on:click={() => mode = 'new'}></Button>
+	{#if mode === 'new'}
+		<EditMeetup on:save={saveMeetup} />
+	{/if}
 	<MeetupGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>
