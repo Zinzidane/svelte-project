@@ -47,6 +47,10 @@ import Button from './UI/Button.svelte';
 		const id = event.detail;
 		meetups = meetups.map(m => m.id === id ? ({...m, isFavorite: !m.isFavorite}) : m);
 	}
+
+	function cancelEdit(): void {
+		mode = null;
+	}
 </script>
 
 <style>
@@ -66,7 +70,7 @@ import Button from './UI/Button.svelte';
 		<Button on:click={() => mode = 'new'}>New Meetup</Button>
 	</div>
 	{#if mode === 'new'}
-		<EditMeetup on:save={saveMeetup} />
+		<EditMeetup on:save={saveMeetup} on:cancel={cancelEdit}/>
 	{/if}
 	<MeetupGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>
