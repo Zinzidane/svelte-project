@@ -79,7 +79,7 @@
     <div class="content">{meetup.description}</div>
     <footer>
         <Button href="mailto:{meetup.contactEmail}" caption="Contact" />
-        <Button caption="{meetup.isFavorite ? 'Unfavorite' : 'Favorite'}" mode="outline" on:click={() => dispatch('togglefavorite', meetup.id)}/>
+        <Button caption="{meetup.isFavorite ? 'Unfavorite' : 'Favorite'}" color="{meetup.isFavorite ? null : 'success'}" mode="outline" on:click={() => dispatch('togglefavorite', meetup.id)}/>
         <Button caption="Show details" />
     </footer>
 </article>
