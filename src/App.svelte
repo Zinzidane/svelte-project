@@ -52,12 +52,18 @@ import Button from './UI/Button.svelte';
 	main {
 		margin-top: 5rem;
 	}
+
+	.meetups-controls {
+		margin: 1rem;
+	}
 </style>
 
 <Header />
 
 <main>
-	<Button caption="New Meetup" on:click={() => mode = 'new'}></Button>
+	<div class="meetups-controls">
+		<Button caption="New Meetup" on:click={() => mode = 'new'}></Button>
+	</div>
 	{#if mode === 'new'}
 		<EditMeetup on:save={saveMeetup} />
 	{/if}
