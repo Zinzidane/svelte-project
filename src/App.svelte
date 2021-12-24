@@ -22,7 +22,8 @@
 		imageUrl:
 			"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Caffe_Nero_coffee_bar%2C_High_St%2C_Sutton%2C_Surrey%2C_Greater_London.JPG/800px-Caffe_Nero_coffee_bar%2C_High_St%2C_Sutton%2C_Surrey%2C_Greater_London.JPG",
 		address: "27th Nerd Road, 32523 New York",
-		contactEmail: "code@test.com"
+		contactEmail: "code@test.com",
+		isFavorite: false
 		},
 		{
 		id: "m2",
@@ -32,12 +33,18 @@
 		imageUrl:
 			"https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Olympic_swimming_pool_%28Tbilisi%29.jpg/800px-Olympic_swimming_pool_%28Tbilisi%29.jpg",
 		address: "27th Nerd Road, 32523 New York",
-		contactEmail: "swim@test.com"
+		contactEmail: "swim@test.com",
+		isFavorite: false
 		}
 	];
 
 	function addMeetup() {
-		meetups = [...meetups, {id: Math.random().toString(), title, subtitle, description, imageUrl, address, contactEmail}]
+		meetups = [...meetups, {id: Math.random().toString(), title, subtitle, description, imageUrl, address, contactEmail, isFavorite: false}]
+	}
+
+	function toggleFavorite(event) {
+		const id = event.detail;
+		meetups = meetups.map(m => m.id === id ? ({...m, isFavorite: !m.isFavorite}) : m);
 	}
 </script>
 
@@ -65,5 +72,5 @@
 		<TextInput controlType="textarea" id="description" label="Description" value={description} on:input={event => (description = event.target.value)} />
 		<Button type="submit" caption="Save"></Button>
 	</form>
-	<MeetupGrid {meetups} />
+	<MeetupGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>

@@ -1,8 +1,11 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
     import type { Meetup } from "../types/meetup.type";
     import Button from "../UI/Button.svelte";
 
     export let meetup: Meetup;
+
+    const dispatch = createEventDispatcher();
 </script>
 
 <style>
@@ -76,7 +79,7 @@
     <div class="content">{meetup.description}</div>
     <footer>
         <Button href="mailto:{meetup.contactEmail}" caption="Contact" />
-        <Button caption="Favorite" mode="outline" />
+        <Button caption="{meetup.isFavorite ? 'Unfavorite' : 'Favorite'}" mode="outline" on:click={() => dispatch('togglefavorite', meetup.id)}/>
         <Button caption="Show details" />
     </footer>
 </article>
