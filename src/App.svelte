@@ -3,53 +3,57 @@
 	import type { Meetup } from './types/meetup.type';
 	import MeetupGrid from './Meetups/MeetupGrid.svelte';
     import EditMeetup from './Meetups/EditMeetup.svelte';
-import Button from './UI/Button.svelte';
+	import meetups from "./Meetups/meetups-store";
+	import MeetupDetail from './Meetups/MeetupDetail.svelte';
 
-	let meetups: Meetup[] = [
-		{
-		id: "m1",
-		title: "Coding Bootcamp",
-		subtitle: "Learn to code in 2 hours",
-		description:
-			"In this meetup, we will have some experts that teach you how to code!",
-		imageUrl:
-			"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Caffe_Nero_coffee_bar%2C_High_St%2C_Sutton%2C_Surrey%2C_Greater_London.JPG/800px-Caffe_Nero_coffee_bar%2C_High_St%2C_Sutton%2C_Surrey%2C_Greater_London.JPG",
-		address: "27th Nerd Road, 32523 New York",
-		contactEmail: "code@test.com",
+	let page = "overview";
+	let pageData: {id?: string} = {};
+
+	let editMode: boolean = false;
+	let editedMeetup: Meetup = {
+		title: '',
+		subtitle: '',
+		description: '',
+		imageUrl: '',
+		address: '',
+		contactEmail: '',
 		isFavorite: false
-		},
-		{
-		id: "m2",
-		title: "Swim Together",
-		subtitle: "Let's go for some swimming",
-		description: "We will simply swim some rounds!",
-		imageUrl:
-			"https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Olympic_swimming_pool_%28Tbilisi%29.jpg/800px-Olympic_swimming_pool_%28Tbilisi%29.jpg",
-		address: "27th Nerd Road, 32523 New York",
-		contactEmail: "swim@test.com",
-		isFavorite: false
-		}
-	];
-	let mode: 'edit' | 'new' = null;
+	};
 
-	function saveMeetup(event): void {
-		const meetup = event.detail;
-		const meetupIndex = meetups.findIndex(m => m.id === meetup.id);
-		if (meetupIndex > -1) {
-			meetups = meetups.splice(meetupIndex, 1, meetup);
-		} else {
-			meetups = [...meetups, meetup];
-		}
-		mode = null;
+	function savedMeetup(): void {
+		resetEdit();
 	}
-
-	function toggleFavorite(event): void {
-		const id = event.detail;
-		meetups = meetups.map(m => m.id === id ? ({...m, isFavorite: !m.isFavorite}) : m);
-	}
-
+  
 	function cancelEdit(): void {
-		mode = null;
+		resetEdit();
+	}
+
+	function resetEdit(): void {
+		editMode = false;
+		editedMeetup ={
+			title: '',
+			subtitle: '',
+			description: '',
+			imageUrl: '',
+			address: '',
+			contactEmail: '',
+			isFavorite: false
+		};
+	}
+  
+	function showDetails(event): void {
+	  page = "details";
+	  pageData.id = event.detail;
+	}
+  
+	function closeDetails(): void {
+	  page = "overview";
+	  pageData = {};
+	}
+  
+	function startEdit(event): void {
+	  editMode = true;
+	  editedMeetup = event.detail;
 	}
 </script>
 
@@ -57,20 +61,21 @@ import Button from './UI/Button.svelte';
 	main {
 		margin-top: 5rem;
 	}
-
-	.meetups-controls {
-		margin: 1rem;
-	}
 </style>
 
 <Header />
 
 <main>
-	<div class="meetups-controls">
-		<Button on:click={() => mode = 'new'}>New Meetup</Button>
-	</div>
-	{#if mode === 'new'}
-		<EditMeetup on:save={saveMeetup} on:cancel={cancelEdit}/>
+	{#if page === 'overview'}
+		{#if editMode}
+		<EditMeetup meetup={editedMeetup} on:save={savedMeetup} on:cancel={cancelEdit} />
+		{/if}
+		<MeetupGrid
+			meetups={$meetups}
+			on:showdetails={showDetails}
+			on:edit={startEdit}
+			on:add={() => {editMode = true}} />
+	{:else}
+		<MeetupDetail id={pageData.id} on:close={closeDetails} />
 	{/if}
-	<MeetupGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>
