@@ -27,17 +27,58 @@ const dispatch = createEventDispatcher();
 
     function submitForm(): void {
         if (meetup.id) {
-        meetups.updateMeetup(meetup.id, meetup);
+            const {id, ...meetupData} = meetup;
+            fetch(`https://svelte-project-e52c4-default-rtdb.europe-west1.firebasedatabase.app/meetups/${id}.json`, {
+                method: 'PATCH',
+                body: JSON.stringify(meetupData),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Error occured during updating the meetup');
+                }
+                return res.json();
+            })
+            .then(data => {
+                meetups.updateMeetup(data.name, meetup);
+            })
+            .catch(console.error);
         } else {
-            meetup.id = Math.random().toString();
-            meetups.addMeetup(meetup);
+            fetch(`https://svelte-project-e52c4-default-rtdb.europe-west1.firebasedatabase.app/meetups.json`, {
+                method: 'POST',
+                body: JSON.stringify(meetup),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Error occured during adding new meetup');
+                }
+                return res.json();
+            })
+            .then(data => {
+                meetups.addMeetup({...meetup, id: data.name });
+            })
+            .catch(console.error);
         }
         dispatch("save");
     }
 
   function deleteMeetup(): void {
-    meetups.removeMeetup(meetup.id);
-    dispatch("save");
+    fetch(`https://svelte-project-e52c4-default-rtdb.europe-west1.firebasedatabase.app/meetups/${meetup.id}.json`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Error occured during deleting the meetup');
+        }
+        return res.json();
+    })
+    .then(data => {
+        meetups.removeMeetup(meetup.id);
+        dispatch("save");
+    })
+    .catch(console.error);
   }
 
   function cancel(): void {

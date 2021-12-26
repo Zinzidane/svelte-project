@@ -7,10 +7,30 @@
 
     export let meetup: Meetup;
 
+    let isLoading = false;
+
     const dispatch = createEventDispatcher();
 
     function toggleFavorite(): void {
-      meetups.toggleFavorite(meetup.id);
+      fetch(`https://svelte-project-e52c4-default-rtdb.europe-west1.firebasedatabase.app/meetups/${meetup.id}.json`, {
+          method: 'PATCH',
+          body: JSON.stringify({isFavorite: !meetup.isFavorite}),
+          headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => {
+          if (!res.ok) {
+              throw new Error('Error occured');
+          }
+          return res.json();
+      })
+      .then(data => {
+          isLoading = false;
+          meetups.toggleFavorite(meetup.id);
+      })
+      .catch(err => {
+        isLoading = false;
+        console.error(err);
+      });
     }
 </script>
 
@@ -85,12 +105,16 @@
         <Button mode="outline" type="button" on:click={() => dispatch('edit', meetup)}>
           Edit
         </Button>
+        {#if isLoading}
+        <span>Changing...</span>
+        {:else}
         <Button
           color="{meetup.isFavorite ? null : 'success'}"
           mode="outline"
           on:click={toggleFavorite}>
           {meetup.isFavorite ? 'Unfavorite' : 'Favorite'}
         </Button>
+        {/if}
         <Button on:click={() => dispatch('showdetails', meetup.id)}>
           Show Details
         </Button>
