@@ -45,13 +45,6 @@
       font-family: "Roboto Slab", sans-serif;
     }
   
-    h1.is-favorite {
-      background: #01a129;
-      color: white;
-      padding: 0 0.5rem;
-      border-radius: 5px;
-    }
-  
     h2 {
       font-size: 1rem;
       color: #808080;
@@ -75,7 +68,7 @@
 
 <article>
     <header>
-        <h1 class:is-favorite={meetup.isFavorite}>
+        <h1>
           {meetup.title}
           {#if meetup.isFavorite}
             <Badge>FAVORITE</Badge>
